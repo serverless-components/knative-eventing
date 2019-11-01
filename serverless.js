@@ -10,10 +10,7 @@ const defaults = {
   knativeGroup: 'eventing.knative.dev',
   knativeVersion,
   namespace: 'default',
-  sink: {
-    kind: 'Service',
-    apiVersion: `serving.knative.dev/${knativeVersion}`
-  }
+  kind: 'Trigger'
 }
 
 class KnativeEventing extends Component {
@@ -69,24 +66,15 @@ class KnativeEventing extends Component {
     return kc
   }
 
-  getManifest({ knativeGroup, name, namespace, filter, sink }) {
+  getManifest({ knativeGroup, name, namespace, kind, spec }) {
     return {
       apiVersion: `${knativeGroup}/${knativeVersion}`,
-      kind: 'Trigger',
+      kind,
       metadata: {
         name,
         namespace
       },
-      spec: {
-        filter,
-        subscriber: {
-          ref: {
-            apiVersion: sink.apiVersion,
-            kind: sink.kind,
-            name: sink.name
-          }
-        }
-      }
+      spec
     }
   }
 

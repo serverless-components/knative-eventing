@@ -39,14 +39,17 @@ myKnativeEventDefinition:
     knativeGroup: eventing.knative.dev # default is `eventing.knative.dev`
     knativeVersion: v1alpha1 # default is `v1alpha1`
     namespace: 'default' # default is `'default'`
+    kind: 'Trigger' # default is `'Trigger'`
     name: my-knative-event
-    sink:
-      name: my-knative-service
-      kind: 'Service', # default is `'Service'`
-      apiVersion: 'serving.knative.dev/v1alpha1' # default is `'serving.knative.dev/v1alpha1'`
-    filter: # optional filtering on CloudEvents attributes and extensions
-      attributes:
-        type: dev.knative.foo.bar
+    spec: # eventing specification
+      filter:
+        attributes:
+          type: dev.knative.foo.bar
+      subscriber:
+        ref:
+          name: my-knative-service
+          kind: 'Service'
+          apiVersion: 'serving.knative.dev/v1alpha1'
 ```
 
 ### 4. Deploy
