@@ -19,20 +19,20 @@ class KnativeEventing extends Component {
 
     const k8sCustom = this.getKubernetesClient(config.kubeConfigPath, kubernetes.CustomObjectsApi)
 
-    let triggerExists = true
+    let eventExists = true
     try {
-      await this.getTrigger(k8sCustom, config)
+      await this.getEvent(k8sCustom, config)
     } catch (error) {
-      triggerExists = error.response.statusCode === 404 ? false : true
+      eventExists = error.response.statusCode === 404 ? false : true
     }
 
     let params = Object.assign({}, config)
     const manifest = this.getManifest(params)
     params = Object.assign(params, { manifest })
-    if (triggerExists) {
-      await this.patchTrigger(k8sCustom, params)
+    if (eventExists) {
+      await this.patchEvent(k8sCustom, params)
     } else {
-      await this.createTrigger(k8sCustom, params)
+      await this.createEvent(k8sCustom, params)
     }
 
     this.state = config
@@ -51,7 +51,7 @@ class KnativeEventing extends Component {
     let params = Object.assign({}, config)
     const manifest = this.getManifest(params)
     params = Object.assign(params, { manifest })
-    await this.deleteTrigger(k8sCustom, params)
+    await this.deleteEvent(k8sCustom, params)
 
     this.state = {}
     await this.save()
@@ -78,7 +78,7 @@ class KnativeEventing extends Component {
     }
   }
 
-  async createTrigger(k8s, { knativeGroup, namespace, kind, manifest }) {
+  async createEvent(k8s, { knativeGroup, namespace, kind, manifest }) {
     return k8s.createNamespacedCustomObject(
       knativeGroup,
       knativeVersion,
@@ -88,7 +88,7 @@ class KnativeEventing extends Component {
     )
   }
 
-  async getTrigger(k8s, { knativeGroup, namespace, kind, name }) {
+  async getEvent(k8s, { knativeGroup, namespace, kind, name }) {
     return k8s.getNamespacedCustomObject(
       knativeGroup,
       knativeVersion,
@@ -98,7 +98,7 @@ class KnativeEventing extends Component {
     )
   }
 
-  async patchTrigger(k8s, { knativeGroup, namespace, kind, name, manifest }) {
+  async patchEvent(k8s, { knativeGroup, namespace, kind, name, manifest }) {
     return k8s.patchNamespacedCustomObject(
       knativeGroup,
       knativeVersion,
@@ -112,7 +112,7 @@ class KnativeEventing extends Component {
     )
   }
 
-  async deleteTrigger(k8s, { knativeGroup, namespace, kind, name }) {
+  async deleteEvent(k8s, { knativeGroup, namespace, kind, name }) {
     return k8s.deleteNamespacedCustomObject(
       knativeGroup,
       knativeVersion,
