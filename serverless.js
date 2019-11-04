@@ -78,26 +78,32 @@ class KnativeEventing extends Component {
     }
   }
 
-  async createTrigger(k8s, { knativeGroup, namespace, manifest }) {
+  async createTrigger(k8s, { knativeGroup, namespace, kind, manifest }) {
     return k8s.createNamespacedCustomObject(
       knativeGroup,
       knativeVersion,
       namespace,
-      'triggers',
+      `${kind.toLowerCase()}s`,
       manifest
     )
   }
 
-  async getTrigger(k8s, { knativeGroup, namespace, name }) {
-    return k8s.getNamespacedCustomObject(knativeGroup, knativeVersion, namespace, 'triggers', name)
+  async getTrigger(k8s, { knativeGroup, namespace, kind, name }) {
+    return k8s.getNamespacedCustomObject(
+      knativeGroup,
+      knativeVersion,
+      namespace,
+      `${kind.toLowerCase()}s`,
+      name
+    )
   }
 
-  async patchTrigger(k8s, { knativeGroup, namespace, name, manifest }) {
+  async patchTrigger(k8s, { knativeGroup, namespace, kind, name, manifest }) {
     return k8s.patchNamespacedCustomObject(
       knativeGroup,
       knativeVersion,
       namespace,
-      'triggers',
+      `${kind.toLowerCase()}s`,
       name,
       manifest,
       {
@@ -106,12 +112,12 @@ class KnativeEventing extends Component {
     )
   }
 
-  async deleteTrigger(k8s, { knativeGroup, namespace, name }) {
+  async deleteTrigger(k8s, { knativeGroup, namespace, kind, name }) {
     return k8s.deleteNamespacedCustomObject(
       knativeGroup,
       knativeVersion,
       namespace,
-      'triggers',
+      `${kind.toLowerCase()}s`,
       name,
       {
         apiVersion: `${knativeGroup}/${knativeVersion}`
