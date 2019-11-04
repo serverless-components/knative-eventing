@@ -23,7 +23,7 @@ class KnativeEventing extends Component {
     try {
       await this.getTrigger(k8sCustom, config)
     } catch (error) {
-      triggerExists = error.body.code === 404 ? false : true
+      triggerExists = error.response.statusCode === 404 ? false : true
     }
 
     let params = Object.assign({}, config)
