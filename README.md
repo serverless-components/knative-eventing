@@ -31,25 +31,28 @@ Make sure that you have generated your [`Kubeconfig` file](https://rancher.com/d
 
 ```yml
 # serverless.yml
+org: acme
+app: todo
+name: todo-knative-eventing
 
-myKnativeEventDefinition:
-  component: '@serverless/knative-eventing'
-  inputs:
-    kubeConfigPath: ../kubeconfig # default is `~/.kube/config`
-    knativeGroup: eventing.knative.dev # default is `eventing.knative.dev`
-    knativeVersion: v1alpha1 # default is `v1alpha1`
-    namespace: 'default' # default is `'default'`
-    kind: 'Trigger' # default is `'Trigger'`
-    name: my-knative-event
-    spec: # eventing specification
-      filter:
-        attributes:
-          type: dev.knative.foo.bar
-      subscriber:
-        ref:
-          name: my-knative-service
-          kind: 'Service'
-          apiVersion: 'serving.knative.dev/v1alpha1'
+component: knative-eventing@dev
+
+inputs:
+  kubeConfigPath: ../kubeconfig # default is `~/.kube/config`
+  knativeGroup: eventing.knative.dev # default is `eventing.knative.dev`
+  knativeVersion: v1alpha1 # default is `v1alpha1`
+  namespace: 'default' # default is `'default'`
+  kind: 'Trigger' # default is `'Trigger'`
+  name: my-knative-event
+  spec: # eventing specification
+    filter:
+      attributes:
+        type: dev.knative.foo.bar
+    subscriber:
+      ref:
+        name: my-knative-service
+        kind: 'Service'
+        apiVersion: 'serving.knative.dev/v1alpha1'
 ```
 
 ### 4. Deploy

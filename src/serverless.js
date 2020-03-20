@@ -14,7 +14,7 @@ const defaults = {
 }
 
 class KnativeEventing extends Component {
-  async default(inputs = {}) {
+  async deploy(inputs = {}) {
     const config = mergeDeepRight(defaults, inputs)
 
     const k8sCustom = this.getKubernetesClient(config.kubeConfigPath, kubernetes.CustomObjectsApi)
@@ -36,7 +36,6 @@ class KnativeEventing extends Component {
     }
 
     this.state = config
-    await this.save()
     return this.state
   }
 
@@ -54,7 +53,6 @@ class KnativeEventing extends Component {
     await this.deleteEvent(k8sCustom, params)
 
     this.state = {}
-    await this.save()
     return {}
   }
 
