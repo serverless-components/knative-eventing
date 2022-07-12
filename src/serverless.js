@@ -69,7 +69,10 @@ class KnativeEventing extends Component {
       apiVersion: `${knativeGroup}/${knativeVersion}`,
       kind,
       metadata: {
-        name,
+        annotations: {
+          "eventing.knative.dev/injection": "enabled"
+        },
+          name,
         namespace
       },
       spec
