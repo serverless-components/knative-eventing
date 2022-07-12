@@ -3,7 +3,7 @@ const { isEmpty, mergeDeepRight } = require('ramda')
 const kubernetes = require('@kubernetes/client-node')
 const { Component } = require('@serverless/core')
 
-const knativeVersion = 'v1alpha1'
+const knativeVersion = 'v1'
 
 const defaults = {
   kubeConfigPath: path.join(process.env.HOME, '.kube', 'config'),
